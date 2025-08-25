@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Logo</a>
+    </nav>
+    <div>
+        <form action="{% url 'home'%}" method="get">
+
+            <input type="text" placeholder="Search here..." name="q">
+
+        </form>
+    </div>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>
