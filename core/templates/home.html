@@ -8,6 +8,7 @@
     }
 </style>
 <h1>Home Page</h1>
+<h3>Hello {{request.user}}</h3>
 <div class="home-container">
   <div class="sidebar">
     <h3>Browse Topics</h3>
@@ -31,9 +32,11 @@
     {% if rooms %} {% for room in rooms %}
     <div>
       <span>@{{ room.host.username }}</span>
+      {% if request.user == room.host %}
       <a href="{%url 'update-room' room.id %}">Edit </a>
-      <a href="{% url 'delete-room' room.id %}">Delete</a><br />
-      <a href="room/{{ room.id }}/"> {{ room.id }} -- {{ room.name }}</a><br />
+      <a href="{% url 'delete-room' room.id %}">Delete</a><br/>
+      {% endif %}
+      <br><a href="room/{{ room.id }}/"> {{ room.id }} -- {{ room.name }}</a><br />
       <small>Topic: {{ room.topic.name }}</small><br />
       <hr />
     </div>
