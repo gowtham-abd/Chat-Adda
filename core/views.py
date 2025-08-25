@@ -4,7 +4,7 @@ from rest_framework import response ,viewsets,status
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from .models import Task,Room,Topics
+from .models import Task,Room,Topics,Message
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .serializers import TaskSerializer
@@ -66,7 +66,17 @@ def logoutUser(request):
 
 def room (request,pk):
     room = Room.objects.get(id=pk)
-    return render(request,'room.html',{'room':room})
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user = request.user,
+            room = room,
+            body = request.POST.get('body')
+        )
+        room.participants.add(request.user)
+        return redirect('room',pk = room.id)
+    return render(request,'room.html',{'room':room,'room_messages':room_messages,'participants':participants})
 
 @login_required
 def createRoom(request):
@@ -103,6 +113,17 @@ def deleteRoom(request,pk):
         room.delete()
         return redirect('home')
     return render(request,'delete.html')
+
+@login_required
+def deleteMessage(request,pk):
+    message = Message.objects.get(id=pk)
+    if request.user != message.user:
+        HttpResponse('You are not allowed to it')
+        
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request,'delete.html',{'obj':message})
 
 class TaskViewSet(viewsets.ModelViewSet):
     task = Task.objects.all()
