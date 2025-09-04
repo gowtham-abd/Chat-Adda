@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import TaskViewSet,home,room,createRoom,updateRoom,deleteRoom,loginPage,logoutUser,registerUser,deleteMessage
+from .views import TaskViewSet,home,room,createRoom,updateRoom,deleteRoom,loginPage,logoutUser,registerUser,deleteMessage,userProfile
 from rest_framework.routers import DefaultRouter
 
 
@@ -16,6 +16,6 @@ urlpatterns = [
     path('create-room',createRoom, name = 'create-room'),
     path('update-room/<str:pk>',updateRoom,name ='update-room'),
     path('delete-room/<str:pk>',deleteRoom,name ='delete-room'),
-    path('delete-message/<str:pk>',deleteMessage,name ='delete-message')
-
-]
+    path('delete-message/<str:pk>',deleteMessage,name ='delete-message'),
+    path('profile/<str:pk>',userProfile,name ='user-profile')
+    ]
