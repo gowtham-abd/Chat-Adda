@@ -21,7 +21,8 @@ def home(request):
         Q(descriptions__icontains=q) ) 
     topics = Topics.objects.all()
     room_count = rooms.count()
-    context = {'rooms':rooms,'topics':topics,'room_count':room_count}
+    recent_activity = Message.objects.filter(Q(room__topic__name__icontains =q ))
+    context = {'rooms':rooms,'topics':topics,'room_count':room_count,'recent_activity':recent_activity}
     return render(request,'home.html',context)
 
 def loginPage(request):
